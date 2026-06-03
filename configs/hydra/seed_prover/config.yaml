@@ -1,0 +1,88 @@
+# Seed Prover Configuration (Hydra Mode)
+#
+# This config uses Hydra's composition system to combine:
+# - Main pipeline settings (this file)
+# - Prover configuration (from prover/ group)
+# - Model configurations (from models/ directory)
+#
+# Usage:
+#   python seed_prover/hydra_runner.py
+#   python seed_prover/hydra_runner.py prover=unified_fast
+#   python seed_prover/hydra_runner.py model.breakdown=models/openai/oss-120b-high_json
+#   python seed_prover/hydra_runner.py output.job_name=my_experiment
+
+defaults:
+  # Prover configuration
+  - prover: unified
+
+  # Model configurations - loaded into model.* namespace
+  - models/openai/oss-20b-high_json@model.breakdown
+  - models/goedel_formalizer_v2/8b@model.formalizer
+  - models/openai/oss-20b-low@model.formalizer_validator
+
+  - _self_  # This file's values take precedence
+
+# Global Settings
+output:
+  dir: ${oc.env:SCRATCH}/results
+  job_name: data_plane_example
+  create_timestamp_dirs: false
+  create_subdirs: true
+
+# Logging verbosity (0=quiet, 1=normal, 2=verbose, 3=debug)
+verbosity: 2
+
+# Pipeline Control
+pipeline:
+  max_refine_rounds: 1
+  run_reuse:
+    enabled: true
+    auto_resume: true  # Automatically detect and resume from last checkpoint (enabled by default)
+    base_run_path: null
+    start_from_round: 0
+    resume_from_component: null
+    start_from_iteration: 0
+    start_from_proving_round: 0
+
+# Component Configurations
+components:
+  data_loader:
+    type: DataLoaderComponent
+    config:
+      input_path: dataset/example_problems.jsonl
+      split: none
+
+  breakdown_json:
+    type: BreakdownJsonComponent
+    config:
+      sample_times: 2
+      recursive_sample_times: 2
+      num_lemmas: null
+      model_config: ${model.breakdown}
+      template: seed_prover
+
+  formalizer:
+    type: FormalizationComponent
+    config:
+      model_config: ${model.formalizer}
+      template: seed_prover
+      sample_times: 1
+      keep_samples: 1
+      cpu: 32
+      validation_config:
+        enabled: true
+        type: select
+        model_config: ${model.formalizer_validator}
+        binary_template: seed_prover/template/formalization/validate_formalization.md
+        select_template: seed_prover/template/formalization/select_formalization.md
+
+  recursive_prover:
+    type: RecursiveProverComponent
+    config:
+      max_iterations: 20
+      prover_config: ${prover}
+
+  proof_builder:
+    type: ProofBuilderComponent
+    config:
+      cpu: 32

@@ -1,0 +1,7 @@
+model: deepseek/deepseek-prover-v2
+api: openrouter
+max_tokens: 20000
+read_cost: 0.5
+write_cost: 2.18
+temperature: 1.0
+base_output_template: "api"

@@ -1,0 +1,46 @@
+# Fixed policy baseline on test split
+# Run: uv run python scripts/proof_simulation/sweep.py --config configs/proof_simulation/sweep_fixed_test.yaml
+
+data:
+  full_proof:
+    8b: "scratch/results/whole_proof_example_8b/minified/proof_attempts.json"
+  agent:
+    shared_breakdowns: false
+    sources:
+      8b: "scratch/results/data_plane_example/dump/minified"
+
+policy:
+  type: "fixed"
+  sweep_params:
+    full_proof_budget:
+      8b:
+        - 1
+        - 2
+      32b:
+        - 0
+    max_breakdowns:
+      - 0
+    breakdown_proof_budget:
+      8b:
+        - 0
+      32b:
+        - 0
+    max_corrections:
+      - 0
+
+simulation:
+  n_seeds: 64
+  max_steps: 1000
+  max_problems: null
+  num_workers: 6
+  parallel_over: "configs"
+  problem_split:
+    file: "dataset/example_problems_train_test_split.txt"
+    split: "test"
+
+output:
+  name: "whole_proof_8b_sweep"
+  dir: "results/simulations"
+  overwrite: true
+  save_trajectories: false
+  save_summary: true

@@ -1,0 +1,55 @@
+# @package _global_.prover
+#
+# Unified Prover Configuration
+# Used by RecursiveProverComponent for both theorems and lemmas
+#
+# This config is composed into the main config via:
+#   defaults:
+#     - prover: unified
+#
+# The @package directive places this config at the 'prover' key in the global config,
+# which is then referenced by components.recursive_prover.config.prover_config
+
+# Global Settings (for the inner prover pipeline)
+output:
+  dir: ${oc.env:SCRATCH}/results
+  job_name: unified_prover
+  create_timestamp_dirs: false
+  create_subdirs: false
+
+# Logging verbosity (0=quiet, 1=normal, 2=verbose, 3=debug)
+verbosity: 1
+
+# Pipeline Control
+pipeline:
+  max_correction_rounds: 0
+  initial_samples: 8
+  correction_samples: 1
+  correct_all_failed_attempts: true
+
+# Component Configurations
+components:
+  data_loader:
+    type: DataLoaderComponent
+    config:
+      input_path: placeholder.json
+      split: none
+      use_metadata: true
+
+  prover:
+    type: ProverComponent
+    config:
+      model_config: configs/models/goedel_prover_v2/8b.yaml
+      inference_handler: dpskcot
+      template: gp_seed
+      use_metadata: true
+      use_correction: 1
+      cpu: 32
+      error_thres: true
+      history_mode: last_one
+
+  summarization:
+    type: SummarizationComponent
+    config:
+      field: complete
+      use_metadata: true

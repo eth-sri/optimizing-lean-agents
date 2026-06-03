@@ -1,0 +1,13 @@
+model: Qwen/Qwen3-4B
+api: vllm
+temperature: 0.6
+max_tokens: 81920
+top_p: 0.95
+top_k: 20
+min_p: 0
+read_cost: 0.0
+write_cost: 0.0
+n_gpus: 4
+node: 1
+base_output_template: qwen
+effective_parameters: 4

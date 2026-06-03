@@ -1,0 +1,10 @@
+Seed: 42
+Total problems: 4
+
+Train (2 problems):
+  numbertheory_4x3m7y3neq2003
+  putnam_1962_a5
+
+Test (2 problems):
+  aime_1983_p1
+  putnam_1962_a6

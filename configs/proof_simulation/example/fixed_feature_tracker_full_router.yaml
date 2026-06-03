@@ -1,0 +1,59 @@
+# Fixed policy with predicted_prob from 4-feature linear model
+# Step 1: Generate trajectories with predicted_prob tracked
+# Run: uv run python scripts/proof_simulation/sweep.py --config configs/proof_simulation/example/fixed_feature_tracker_full_router.yaml
+
+# Data sources
+data:
+  full_proof:
+    8b: "scratch/results/whole_proof_example_8b/minified/proof_attempts.json"
+  agent:
+    shared_breakdowns: false
+    sources:
+      8b: "scratch/results/data_plane_example/dump/minified"
+  load_code: true
+
+# Policy configuration
+policy:
+  type: "fixed"
+  sweep_params:
+    full_proof_budget:
+      8b:
+        - 0
+      32b:
+        - 0
+    max_breakdowns:
+      - 2
+    breakdown_proof_budget:
+      8b:
+        - 2
+      32b:
+        - 0
+    max_corrections:
+      - 0
+
+# State tracker — all features needed by linear_model.json
+state_tracker:
+  features:
+    - type: oracle
+    - type: attempt_count
+    - type: normalized_similarity
+    - type: error_diversity
+
+# Simulation settings
+simulation:
+  n_seeds: 64
+  max_steps: 1000
+  max_problems: null
+  num_workers: 6
+  parallel_over: "seeds"
+  problem_split:
+    file: "dataset/example_problems_train_test_split.txt"
+    split: "train"
+
+# Output
+output:
+  name: "fixed_feature_tracker_full_router"
+  dir: "results/simulations"
+  overwrite: true
+  save_trajectories: true
+  save_summary: true

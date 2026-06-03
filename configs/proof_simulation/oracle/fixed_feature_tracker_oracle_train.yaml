@@ -1,0 +1,68 @@
+# Step 1: Feature tracker with noisy oracle on TRAIN split
+# Run: uv run python scripts/proof_simulation/sweep.py --config configs/proof_simulation/fixed_feature_tracker_oracle_train.yaml
+
+data:
+   full_proof:
+    8b: "scratch/results/whole_proof_example_8b/minified/proof_attempts.json"
+  agent:
+    shared_breakdowns: false
+    sources:
+      8b: "scratch/results/data_plane/dump/minified"
+
+policy:
+  type: "fixed"
+  sweep_params:
+    full_proof_budget:
+      8b:
+        - 0
+      32b:
+        - 0
+    max_breakdowns:
+      - 8
+    breakdown_proof_budget:
+      8b:
+        - 32
+      32b:
+        - 0
+    max_corrections:
+      - 0
+
+state_tracker:
+  features:
+    - type: oracle
+    - type: noisy_oracle
+      resample_per_step: true
+    - type: attempt_count
+    - type: avg_cost
+  sweep_params:
+    sigma:
+      - -1.0
+      - 0.0
+      - 0.001
+      - 0.01
+      - 0.02
+      - 0.03
+      - 0.04
+      - 0.05
+      - 0.1
+      - 0.15
+      - 0.18
+      - 0.2
+      - 0.5
+
+simulation:
+  n_seeds: 64
+  max_steps: 1000
+  max_problems: null
+  num_workers: 6
+  parallel_over: "seeds"
+  problem_split:
+    file: "dataset/example_problems_train_test_split.txt"
+    split: "train"
+
+output:
+  name: "fixed_feature_tracker_oracle_train"
+  dir: "results/simulations"
+  overwrite: true
+  save_trajectories: true
+  save_summary: true

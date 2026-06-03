@@ -1,0 +1,78 @@
+# Base config for the one-stage router sweep.
+#
+# Runs the cost_quality router on the test split using a one-stage logistic
+# trained on raw features (see train_onestage.yaml). PretrainedLogisticModel
+# reads its feature list from the model JSON, so feature-subset variants only
+# need to override --model-path / --output-name; the feature_mapping below is
+# a harmless superset.
+#
+# Defaults below run the full 4-feature variant. Feature-subset variants reuse
+# this config; see run_onestage_*_pipeline.sh.
+# Data sources
+data:
+  full_proof:
+    8b: "scratch/results/whole_proof_example_8b/minified/proof_attempts.json"
+  agent:
+    shared_breakdowns: false
+    sources:
+      8b: "scratch/results/data_plane_example/dump/minified"
+  load_code: true
+
+policy:
+  type: "cost_quality"
+  allowed_actions:
+    - "decompose"
+    - "prove_8b"
+  params:
+    hot_start:
+      8b: 2
+      32b: 2
+    prob_model: "pretrained_logistic"
+    model_path: "models/onestage_logistic_train.json"
+    feature_mapping:
+      normalized_similarity: "normalized_similarity"
+      error_diversity: "error_diversity"
+      num_attempts: "num_attempts"
+    cost_model: "running_average"
+  sweep_params:
+    lambda_val:
+      - 0
+      - 2e-8
+      - 4e-8
+      - 6e-8
+      - 8e-8
+      - 1e-7
+      - 1.5e-7
+      - 2e-7
+      - 4e-7
+      - 4e-6
+    sigma:
+      - 0
+    max_breakdowns:
+      - 2
+    max_corrections:
+      - 0
+
+state_tracker:
+  features:
+    - type: attempt_count
+    - type: normalized_similarity
+    - type: error_diversity
+
+simulation:
+  n_seeds: 64
+  shared_seeds: true   # every config (lambda value) uses the SAME seed set (common random numbers)
+  max_steps: 1000
+  max_problems: null
+  num_workers: 6
+  parallel_over: "seeds"
+  problem_split:
+    file: "dataset/example_problems_train_test_split.txt"
+    split: "test"
+
+output:
+  name: "onestage_router_example"
+  dir: "results/simulations"
+  overwrite: true
+  save_trajectories: false
+  save_summary: true

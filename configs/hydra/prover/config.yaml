@@ -1,0 +1,40 @@
+# Whole proof generation config (no breakdown/formalization, direct proving)
+# Usage: uv run python prover/runner.py --config configs/whole_proof.yaml
+
+output:
+  dir: ./scratch/results
+  job_name: whole_proof_example_8b
+  create_timestamp_dirs: false
+  create_subdirs: true
+
+verbosity: 2
+
+pipeline:
+  max_correction_rounds: 0
+  initial_samples: 2
+  correction_samples: 1
+  correct_all_failed_attempts: true
+
+components:
+  data_loader:
+    type: DataLoaderComponent
+    config:
+      input_path: dataset/example_problems.jsonl
+      split: none
+
+  prover:
+    type: ProverComponent
+    config:
+      model_config: configs/models/goedel_prover_v2/8b.yaml
+      inference_handler: dpskcot
+      template: gp_seed
+      use_correction: 1
+      cpu: 32
+      error_thres: true
+      history_mode: last_one
+
+  summarization:
+    type: SummarizationComponent
+    config:
+      field: complete
+      minify_results: true

@@ -1,0 +1,26 @@
+# Base config for the one-stage logistic pipeline.
+#
+# Trains a single logistic directly on raw features + 1/x:num_attempts,
+# reusing trajectories produced by fixed_feature_tracker_linear_4feat (those
+# already track all four raw features in tracked_state).
+#
+# Defaults below train the full 4-feature variant. Feature-subset variants
+# (LOO / single-feature) reuse this config and override --features /
+# --output-path on the command line; see run_onestage_*_pipeline.sh.
+sources:
+  8b:
+    type: simulation
+    trajectory_dir: "results/simulations/fixed_feature_tracker_full_router"
+    skip_first: 2
+features:
+  - "normalized_similarity"
+  - "error_diversity"
+  - "1/x:num_attempts"
+# Full superset mapping. Subset variants only look up the features they list,
+# so the extra keys here are harmless.
+feature_mapping:
+  normalized_similarity: "normalized_similarity"
+  error_diversity: "error_diversity"
+  num_attempts: "num_attempts"
+C: 1.0
+output_path: "models/onestage_logistic_train.json"

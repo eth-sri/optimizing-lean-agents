@@ -1,0 +1,79 @@
+# Router with logit(noisy_p) oracle on TEST split
+# Run: uv run python scripts/proof_simulation/sweep.py --config configs/proof_simulation/sweep_stage2_oracle_logit_test.yaml
+
+data:
+   full_proof:
+    8b: "scratch/results/whole_proof_example_8b/minified/proof_attempts.json"
+  agent:
+    shared_breakdowns: false
+    sources:
+      8b: "scratch/results/data_plane/dump/minified"
+
+policy:
+  type: "cost_quality"
+  allowed_actions:
+    - "decompose"
+    - "prove_8b"
+  params:
+    hot_start:
+      8b: 2
+      32b: 2
+    prob_model: "pretrained_logistic"
+    model_path: "models/oracle_logit_logistic_train.json"
+    feature_mapping:
+      noisy_p: "noisy_p"
+      num_attempts: "num_attempts"
+    cost_model: "running_average"
+  sweep_params:
+    lambda_val:
+      - 0
+      - 2e-8
+      - 4e-8
+      - 6e-8
+      - 8e-8
+      - 1e-7
+      - 1.5e-7
+      - 2e-7
+      - 4e-7
+      - 4e-6
+    sigma:
+      - -1.0
+      - 0.0
+      - 0.001
+      - 0.01
+      - 0.02
+      - 0.03
+      - 0.04
+      - 0.05
+      - 0.1
+      - 0.15
+      - 0.18
+      - 0.2
+      - 0.5
+    max_breakdowns:
+      - 8
+    max_corrections:
+      - 0
+
+state_tracker:
+  features:
+    - type: noisy_oracle
+    - type: attempt_count
+    - type: avg_cost
+
+simulation:
+  n_seeds: 64
+  max_steps: 1000
+  max_problems: null
+  num_workers: 32
+  parallel_over: "seeds"
+  problem_split:
+    file: "dataset/example_problems_train_test_split.txt"
+    split: "test"
+
+output:
+  name: "stage2_oracle_logit_router_test_2"
+  dir: "results/simulations"
+  overwrite: false
+  save_trajectories: false
+  save_summary: true

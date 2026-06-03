@@ -1,0 +1,13 @@
+model: gemini-3-pro-preview
+api: google
+max_tokens: null
+temperature: null
+top_p: null
+concurrent_requests: 8
+config:
+  max_output_tokens: 64000
+  response_mime_type: application/json
+  response_schema: judge_list
+read_cost: 2.0
+write_cost: 12.00
+effective_parameters: 0.0

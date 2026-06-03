@@ -1,0 +1,8 @@
+# Train stage 2 with logit(noisy_p) + 1/x:num_attempts
+# Run: uv run python scripts/proof_simulation/train_logistic.py --config configs/proof_simulation/train_stage2_oracle_logit_train.yaml
+trajectory_base_dir: "results/simulations/fixed_feature_tracker_oracle_train"
+features:
+  - "logit:noisy_p"
+  - "1/x:num_attempts"
+C: 1.0
+output_path: "models/oracle_logit_logistic_train.json"

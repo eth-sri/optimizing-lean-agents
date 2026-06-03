@@ -1,0 +1,13 @@
+model: openai/gpt-oss-20b
+api: together
+max_tokens: 40960
+read_cost: 0.1
+write_cost: 0.4
+temperature: 1.0
+system_prompt: 'You are ChatGPT, a large language model trained by OpenAI.
+
+  '
+tokenizer_kwargs:
+  model_identity: You are OpenAI GPT OSS.
+base_output_template: api
+effective_parameters: 3.6
