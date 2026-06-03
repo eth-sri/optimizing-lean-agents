@@ -22,29 +22,40 @@ To clone the repository, one can run the following command:
 git clone --recurse-submodules git@github.com:eth-sri/optimizing-lean-agents.git
 ```
 
-## Quick Start
+## Install Lean
 
-For this project, we use Lean version 4.9.0. To set up the environment, one can run the following commands. Note that the paths to the Lean math library and the API keys should be changed to the appropriate values for your system. The API key is needed for the data collection with the agent, but not for the whole-proof generation or the simulations.
+For this project, we use Lean version 4.9.0. To set up the environment in the way we did, one can run the following commands:
 
-```bash
-# Python deps (agent = API clients, gpu = vLLM + torch)
-uv sync --extra agent --extra gpu
-
-# Lean
+```
 curl https://elan.lean-lang.org/elan-init.sh -sSf | sh -s -- -y
 source ~/.elan/env
 cd mathlib4 && lake build && cd ..
-
-# Env variables
-export SCRATCH=./scratch && mkdir -p $SCRATCH/results
-export TOGETHER_API_KEY=<your_key>
-export CUDA_VISIBLE_DEVICES=<your-available-gpu>
 ```
 
 To verify that the Lean environment is set up correctly, one can run the following command to check that the Lean math library compiles:
 
 ```
 uv run python lean_compiler/repl_scheduler.py
+```
+
+The output should include the following line if the Lean environment is set up correctly:
+
+```
+Progress: 1/1 proofs processed. REPL errors: 0
+```
+
+## Quick Start
+
+The following are the relevant commands to set up the `uv` environment and the relevant environment variables:
+
+```bash
+# Python deps (agent = API clients, gpu = vLLM + torch)
+uv sync --extra agent --extra gpu
+
+# Env variables
+export SCRATCH=./scratch && mkdir -p $SCRATCH/results
+export TOGETHER_API_KEY=<your_key>
+export CUDA_VISIBLE_DEVICES=<your-available-gpu>
 ```
 
 ## Data Generation
