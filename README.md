@@ -114,3 +114,19 @@ uv run --extra gui streamlit run analysis_gui/seed/app.py --server.headless=True
 ```
 
 In the GUI, it is possible to both analyze the runs from the agent data collection step visually, and analyze trajectories and generate the plots from the simulations.
+
+## Citation
+
+If you find our work useful, please consider citing our paper:
+
+```
+@article{rögnvaldsson2026optimizingcostqualitytradeoffagentic,
+      title={Optimizing the Cost-Quality Tradeoff of Agentic Theorem Provers in Lean}, 
+      author={Kári Rögnvaldsson and Chenhao Sun and Jasper Dekoninck and Martin Vechev},
+      year={2026},
+      eprint={2606.04883},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL},
+      url={https://arxiv.org/abs/2606.04883}, 
+}
+```
