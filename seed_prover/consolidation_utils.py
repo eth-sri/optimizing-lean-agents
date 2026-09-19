@@ -357,8 +357,6 @@ def extract_model_config_paths(config: Dict[str, Any], verbosity: int = 3) -> Di
                         paths["breakdown"] = "configs/models/goedel_formalizer_v2/32b.yaml"
                     elif "8b" in model_name.lower() or "8" in model_name:
                         paths["breakdown"] = "configs/models/goedel_formalizer_v2/8b.yaml"
-                    elif "7b" in model_name.lower() or "7" in model_name:
-                        paths["breakdown"] = "configs/models/goedel_formalizer_v2/7b.yaml"
                 elif "gpt-oss" in model_name.lower() or "openai" in model_name.lower():
                     if "120b" in model_name.lower():
                         paths["breakdown"] = "configs/models/openai/oss-120b-high.yaml"
@@ -387,8 +385,6 @@ def extract_model_config_paths(config: Dict[str, Any], verbosity: int = 3) -> Di
                         paths["formalization"] = "configs/models/goedel_formalizer_v2/32b.yaml"
                     elif "8b" in model_name.lower() or "8" in model_name:
                         paths["formalization"] = "configs/models/goedel_formalizer_v2/8b.yaml"
-                    elif "7b" in model_name.lower() or "7" in model_name:
-                        paths["formalization"] = "configs/models/goedel_formalizer_v2/7b.yaml"
 
     if verbosity >= 3:
         logger.info(f"Extracted model_config_paths: {paths}")

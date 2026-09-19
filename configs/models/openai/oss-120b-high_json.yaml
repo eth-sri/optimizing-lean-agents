@@ -1,8 +1,8 @@
-model: openai/gpt-oss-20b
+model: openai/gpt-oss-120b
 api: together
 max_tokens: 81920
-read_cost: 0.05
-write_cost: 0.2
+read_cost: 0.15
+write_cost: 0.6
 temperature: 1.0
 reasoning_effort: high
 structured_output: json

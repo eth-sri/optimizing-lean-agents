@@ -1,13 +1,13 @@
 # Step 1: Feature tracker with noisy oracle on TRAIN split
-# Run: uv run python scripts/proof_simulation/sweep.py --config configs/proof_simulation/fixed_feature_tracker_oracle_train.yaml
+# Run: uv run python scripts/proof_simulation/sweep.py --config configs/proof_simulation/oracle/fixed_feature_tracker_oracle_train.yaml
 
 data:
-   full_proof:
+  full_proof:
     8b: "scratch/results/whole_proof_example_8b/minified/proof_attempts.json"
   agent:
     shared_breakdowns: false
     sources:
-      8b: "scratch/results/data_plane/dump/minified"
+      8b: "scratch/results/data_plane_example/dump/minified"
 
 policy:
   type: "fixed"

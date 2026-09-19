@@ -1,5 +1,5 @@
 # Whole proof generation config (no breakdown/formalization, direct proving)
-# Usage: uv run python prover/runner.py --config configs/whole_proof.yaml
+# Usage: uv run python prover/runner.py --config configs/hydra/prover/config.yaml
 
 output:
   dir: ./scratch/results

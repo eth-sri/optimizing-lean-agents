@@ -1,5 +1,5 @@
 # Fixed policy baseline on test split
-# Run: uv run python scripts/proof_simulation/sweep.py --config configs/proof_simulation/sweep_fixed_test.yaml
+# Run: uv run python scripts/proof_simulation/sweep.py --config configs/proof_simulation/example/sweep_fixed_whole_proof.yaml
 
 data:
   full_proof:

@@ -96,7 +96,6 @@ MODEL_NAME_TO_EFFECTIVE_PARAMS = {
     # Goedel models
     "goedel-lm/goedel-formalizer-v2-8b": 8,
     "goedel-lm/goedel-formalizer-v2-32b": 32,
-    "goedel-lm/goedel-formalizer-v2-7b": 7,
     "goedel-lm/goedel-prover-v2-8b": 8,
     "goedel-lm/goedel-prover-v2-32b": 32,
     # OpenAI OSS models

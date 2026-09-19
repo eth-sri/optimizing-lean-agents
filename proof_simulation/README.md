@@ -109,20 +109,19 @@ Add to `SimulationState` in `state.py`, populate in `SimulatedProblem.get_state(
 ## Running
 
 ```bash
-# Single run
-uv run python scripts/proof_simulation/run.py --config configs/proof_simulation/fixed_putnam.yaml
+# Fixed-policy sweep over the example test split
+uv run python scripts/proof_simulation/sweep.py --config configs/proof_simulation/example/sweep_fixed_test.yaml
 
-# Hyperparameter sweep (cartesian product)
-uv run python scripts/proof_simulation/sweep.py --config configs/proof_simulation/sweep_fixed.yaml
+# Cost/quality router sweep
+uv run python scripts/proof_simulation/sweep.py --config configs/proof_simulation/example/sweep_onestage.yaml
 ```
 
-### Paper experiments
+### Included experiment configs
 
 | Experiment | Command |
 |---|---|
-| 8b agent baseline (`0_8b_agent_baseline`) | `sweep.py --config configs/proof_simulation/sweep_fixed_test.yaml` |
-| Fixed-budget sweep | `sweep.py --config configs/proof_simulation/sweep_fixed.yaml` |
-| Putnam full-proof fixed | `run.py --config configs/proof_simulation/fixed_putnam.yaml` |
+| 8B fixed-budget agent baseline | `sweep.py --config configs/proof_simulation/example/sweep_fixed_test.yaml` |
+| 8B whole-proof baseline | `sweep.py --config configs/proof_simulation/example/sweep_fixed_whole_proof.yaml` |
 | Oracle router | `sweep.py --config configs/proof_simulation/oracle/sweep_noisy_oracle.yaml` |
 | One-stage cost/quality router | `sweep.py --config configs/proof_simulation/example/sweep_onestage.yaml` |
 
