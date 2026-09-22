@@ -6,6 +6,7 @@ requires-python = ">=3.10"
 # and the feature-engineering pipeline. Pure-Python + scientific stack, so this
 # installs on any platform (macOS/Linux, no GPU).
 dependencies = [
+    "loguru",
     "matplotlib",
     "numpy",
     "pandas",
@@ -26,7 +27,6 @@ agent = [
     "google-genai",
     "hydra-core",
     "jload",
-    "loguru",
     "omegaconf",
     "openai",
     "pexpect",

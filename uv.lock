@@ -2321,6 +2321,7 @@ name = "lean-breakdown"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [
+    { name = "loguru" },
     { name = "matplotlib" },
     { name = "numpy", version = "2.2.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
     { name = "numpy", version = "2.3.5", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
@@ -2339,7 +2340,6 @@ agent = [
     { name = "google-genai" },
     { name = "hydra-core" },
     { name = "jload" },
-    { name = "loguru" },
     { name = "omegaconf" },
     { name = "openai" },
     { name = "pexpect" },
@@ -2364,7 +2364,7 @@ requires-dist = [
     { name = "google-genai", marker = "extra == 'agent'" },
     { name = "hydra-core", marker = "extra == 'agent'" },
     { name = "jload", marker = "extra == 'agent'" },
-    { name = "loguru", marker = "extra == 'agent'" },
+    { name = "loguru" },
     { name = "matplotlib" },
     { name = "numpy" },
     { name = "omegaconf", marker = "extra == 'agent'" },
