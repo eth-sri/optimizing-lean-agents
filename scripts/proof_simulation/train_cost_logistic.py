@@ -1,11 +1,8 @@
 #!/usr/bin/env python3
-"""Train a cost-based logistic regression model on full proof data and save to JSON.
-
-Fits P(success | output_sflops) per model_name from minified full proof data.
-The saved model can be used as a PredictedProbFeature in the simulation.
+"""Train logistic quality models from proof costs or tracked trajectory features.
 
 Usage:
-    python scripts/proof_simulation/train_cost_logistic.py --config configs/proof_simulation/train_cost_logistic.yaml
+    python scripts/proof_simulation/train_cost_logistic.py --config configs/proof_simulation/example/train_onestage.yaml
 """
 
 import argparse
@@ -241,8 +238,11 @@ def main():
         print(f"  {n} samples (pos={pos}, neg={n - pos}, balance={pos/n:.2%})" if n > 0 else "  0 samples")
 
         if not X_rows:
-            models_dict[model_name] = {"type": "constant", "value": 0.0}
-            continue
+            raise ValueError(
+                f"No usable training samples for {model_name}. Check the source path, "
+                "tracked features, problem split, and attempt budget. Simulation "
+                "trajectories must include prove actions after skip_first attempts."
+            )
 
         X = np.array(X_rows)
         y = np.array(y_labels)

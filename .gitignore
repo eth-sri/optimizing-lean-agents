@@ -26,3 +26,8 @@ hierarchical_*
 test_scripts
 **/.DS_Store
 models
+
+/tests/
+/investigations/
+/output/
+/tmp/

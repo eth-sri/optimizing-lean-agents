@@ -13,15 +13,18 @@ class CostModel(ABC):
 
     @abstractmethod
     def predict(self, state: SimulationState, action: Action, problem: SimulatedProblem) -> float:
-        """Return estimated cost (in total_sflops) for this action."""
+        """Return estimated cost in the model's configured SFLOP units."""
         pass
 
 
 class RunningAverageCostModel(CostModel):
     """Tracks observed costs during simulation and returns running averages."""
 
-    def __init__(self, default_cost: float = 0.0):
+    def __init__(self, default_cost: float = 0.0, cost_metric: str = "total_sflops"):
+        if cost_metric not in {"total_sflops", "output_sflops"}:
+            raise ValueError(f"Unknown routing cost metric: {cost_metric}")
         self.default_cost = default_cost
+        self.cost_metric = cost_metric
         self._totals: Dict[str, float] = {}
         self._counts: Dict[str, int] = {}
 
@@ -31,7 +34,7 @@ class RunningAverageCostModel(CostModel):
 
     def observe(self, action: Action, cost: DetailedCost, target_id: str = ""):
         key = self._action_key(action, target_id)
-        self._totals[key] = self._totals.get(key, 0.0) + cost.total_sflops
+        self._totals[key] = self._totals.get(key, 0.0) + getattr(cost, self.cost_metric)
         self._counts[key] = self._counts.get(key, 0) + 1
 
     def predict(self, state: SimulationState, action: Action, problem: SimulatedProblem) -> float:

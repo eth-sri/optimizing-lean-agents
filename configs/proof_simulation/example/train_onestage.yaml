@@ -1,12 +1,8 @@
 # Base config for the one-stage logistic pipeline.
 #
-# Trains a single logistic directly on raw features + 1/x:num_attempts,
-# reusing trajectories produced by fixed_feature_tracker_linear_4feat (those
-# already track all four raw features in tracked_state).
-#
-# Defaults below train the full 4-feature variant. Feature-subset variants
-# (LOO / single-feature) reuse this config and override --features /
-# --output-path on the command line; see run_onestage_*_pipeline.sh.
+# Trains on proof similarity, error diversity, and 1/x:num_attempts from
+# fixed_feature_tracker_full_router. Override --features / --output-path
+# to train feature-subset variants.
 sources:
   8b:
     type: simulation

@@ -24,6 +24,7 @@ policy:
       noisy_p: "noisy_p"
       num_attempts: "num_attempts"
     cost_model: "running_average"
+    cost_metric: "total_sflops"
   sweep_params:
     lambda_val:
       - 0

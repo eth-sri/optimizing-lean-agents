@@ -1,5 +1,4 @@
-# Fixed policy with predicted_prob from 4-feature linear model
-# Step 1: Generate trajectories with predicted_prob tracked
+# Step 1: Generate training trajectories for the three-input quality estimator.
 # Run: uv run python scripts/proof_simulation/sweep.py --config configs/proof_simulation/example/fixed_feature_tracker_full_router.yaml
 
 # Data sources
@@ -25,13 +24,13 @@ policy:
       - 2
     breakdown_proof_budget:
       8b:
-        - 2
+        - 64
       32b:
         - 0
     max_corrections:
       - 0
 
-# State tracker — all features needed by linear_model.json
+# State tracker — inputs used by train_onestage.yaml
 state_tracker:
   features:
     - type: oracle

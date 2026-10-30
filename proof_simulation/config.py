@@ -153,7 +153,7 @@ def build_policy(policy_type: str, params: dict, problems=None, allowed_actions=
             prob_model.sigma = float(params['sigma'])
         cost_model_cls = COST_MODEL_REGISTRY[cost_model_type]
         if cost_model_type == "running_average":
-            cost_model_kwargs = {}
+            cost_model_kwargs = {"cost_metric": params.get("cost_metric", "total_sflops")}
             if "default_cost" in params:
                 cost_model_kwargs["default_cost"] = float(params["default_cost"])
             cost_model = cost_model_cls(**cost_model_kwargs)

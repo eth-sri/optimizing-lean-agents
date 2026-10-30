@@ -30,8 +30,10 @@ _DECL_NAMES = re.compile(r"\b(\w+(?:_lemma\d+|_theorem)(?:_f\d+)?)\b")
 # Matches `let X := ...` or `let x := ...` single-letter bindings
 _LET_BINDINGS = re.compile(r"\blet\s+([A-Za-z_]\w*)\b")
 
-# Matches `intro x y z` or `intro h₁ h₂` — captures the identifiers after intro/intros
-_INTRO_ARGS = re.compile(r"\b(?:intro|intros)\s+((?:[A-Za-z_][A-Za-z₀₁₂₃₄₅₆₇₈₉_\w]*\s*)+)")
+# Matches same-line binders in `intro x y z` or `intro h₁ h₂`.
+# Newlines end this heuristic's binder list: consuming them would also collect
+# the next tactic (e.g. `simp` or `have`) and rename it throughout the proof.
+_INTRO_ARGS = re.compile(r"\b(?:intro|intros)[ \t]+((?:[A-Za-z_][A-Za-z₀₁₂₃₄₅₆₇₈₉_\w]*[ \t]*)+)")
 
 # Matches `have name :` or `have name :`
 _HAVE_NAMES = re.compile(r"\b(?:have|let)\s+([A-Za-z_][A-Za-z₀₁₂₃₄₅₆₇₈₉_\w]*)\s*(?::|:=)")

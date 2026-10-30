@@ -298,6 +298,10 @@ class Breakdown:
         proof_cost = 0.0
         if self.parsed_breakdown:
             proof_cost += self.parsed_breakdown.get_total_cost(cost_type, exclude_prover_calls=exclude_prover_calls)
+        elif self.component_costs:
+            # Failed preparations can retain downstream usage without proof targets.
+            for component in ('breakdown_parser', 'formalization'):
+                proof_cost += float((self.component_costs.get(component) or {}).get(cost_type, 0.0))
 
         return breakdown_cost + proof_cost
 

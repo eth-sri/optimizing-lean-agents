@@ -6,8 +6,7 @@
 # need to override --model-path / --output-name; the feature_mapping below is
 # a harmless superset.
 #
-# Defaults below run the full 4-feature variant. Feature-subset variants reuse
-# this config; see run_onestage_*_pipeline.sh.
+# Defaults below run the full three-input variant.
 # Data sources
 data:
   full_proof:
@@ -34,6 +33,7 @@ policy:
       error_diversity: "error_diversity"
       num_attempts: "num_attempts"
     cost_model: "running_average"
+    cost_metric: "total_sflops"  # Routing uses input + output; reporting uses output only.
   sweep_params:
     lambda_val:
       - 0

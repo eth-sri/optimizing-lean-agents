@@ -67,7 +67,7 @@ class TargetNode:
         if self._breakdown_model_filter:
             self.breakdown_templates: List[BreakdownTemplate] = [
                 t for t in self._original_breakdown_templates
-                if any(m in self._breakdown_model_filter
+                if not t.target_proof_data or any(m in self._breakdown_model_filter
                        for td in t.target_proof_data.values()
                        for m in td.keys())
             ]
@@ -318,6 +318,10 @@ class TargetNode:
         template = self.breakdown_templates[self.next_breakdown_idx]
         self.next_breakdown_idx += 1
 
+        if self.active_breakdown is not None:
+            self.active_breakdown.failed = True
+        self.active_breakdown = None
+
         # Build TargetNodes for each target in the breakdown
         target_nodes: Dict[int, TargetNode] = {}
         for target_id, proof_data in template.target_proof_data.items():
@@ -364,12 +368,9 @@ class TargetNode:
                     continue
                 total = len(pairs)
                 successes = sum(1 for p in pairs if p.initial.success)
-                # Include correction successes
-                correction_successes = sum(
-                    1 for p in pairs
-                    for c in p.corrections if c.success
-                )
-                rate = (successes + correction_successes) / max(total, 1)
+                # PROVE draws one initial attempt. Corrections are separate
+                # actions, so their outcomes must not enter its success rate.
+                rate = successes / total
                 rates[Action(type=ActionType.PROVE, model=model_name)] = rate
 
             # Correction rate (conditional on having a failed attempt)
@@ -464,7 +465,7 @@ class TargetNode:
             },
             'last_prove_model': self.last_prove_model,
             'last_prove_success': self.last_prove_success,
-            'breakdowns_created': len(self.breakdowns),
+            'breakdowns_created': self.next_breakdown_idx,
             'breakdowns_available': len(self.breakdown_templates),
             'corrections_used': self.correction_index,
             'corrections_available': len(self.last_attempt_pair.corrections) if self.last_attempt_pair else 0,

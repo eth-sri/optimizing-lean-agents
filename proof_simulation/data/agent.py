@@ -98,6 +98,12 @@ def _build_breakdown_templates(problem, load_code: bool = False) -> List[Breakdo
 
     for idx, breakdown in enumerate(sorted_breakdowns):
         if not breakdown.parsed_breakdown:
+            templates.append(BreakdownTemplate(
+                breakdown_idx=idx,
+                cost=_compute_breakdown_cost(breakdown.get_total_cost),
+                target_proof_data={},
+                breakdown_key=(breakdown.round_id, breakdown.breakdown_id),
+            ))
             continue
 
         # Calculate breakdown creation cost (everything except prover attempts)
@@ -136,8 +142,8 @@ def _compute_breakdown_cost(get_total_cost_fn) -> DetailedCost:
     effective_params for sflops calculation.
     """
     return DetailedCost(
-        input_sflops=int(get_total_cost_fn('input_sflops', exclude_prover_calls=True)),
-        output_sflops=int(get_total_cost_fn('output_sflops', exclude_prover_calls=True)),
+        input_sflops=get_total_cost_fn('input_sflops', exclude_prover_calls=True),
+        output_sflops=get_total_cost_fn('output_sflops', exclude_prover_calls=True),
         input_tokens=int(get_total_cost_fn('input_tokens', exclude_prover_calls=True)),
         output_tokens=int(get_total_cost_fn('output_tokens', exclude_prover_calls=True)),
     )
